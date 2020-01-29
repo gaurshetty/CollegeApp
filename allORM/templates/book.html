@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Book Info</title>
+</head>
+
+<body>
+    <h2><a href="http://localhost:8000/book/">Book Registration Page</a></h2>
+    {{actionmsg}}
+    <br><br>
+    <form action="http://localhost:8000/book/save/" method="POST">
+        {% csrf_token %}
+        Book ID : <input type="text" name="id" value="{{book.id}}" readonly><br><br>
+        Book Name : <input type="text" name="name" value="{{book.name}}"><br><br>
+        Book Price : <input type="text" name="price" value="{{book.price}}"><br><br>
+        Book Quantity : <input type="text" name="quantity" value="{{book.quantity}}"><br><br>
+        Book Publication : <select name="pub">
+            <option value="NA">--SELECT--</option>
+            {% for pub in publications %}
+            {% if pub.id == book.publication_id %}
+            <option value="{{pub.id}}" selected>{{pub.name}}</option>
+            {% else %}
+            <option value="{{pub.id}}">{{pub.name}}</option>
+            {% endif %}
+            {% endfor%}
+        </select><br><br>
+        Book Author : <select name="authorlist" multiple>
+        {% for author in authorlist %}
+            <option value="{{author.id}}">{{author.name}}</option>
+        {% endfor %}
+        </select><br><br>
+        <input type="submit">&nbsp;&nbsp;
+        <button type="button" onclick="location.href='http://localhost:8000/book/'">Reset</button>&nbsp;&nbsp;
+        <button type="button" onclick="location.href='http://localhost:8000/'">Home</button>
+        <br><br>
+    </form>
+    {% if books %}
+    <h3>List of Books</h3>
+    <table border="1">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Publication</th>
+            <th>Author</th>
+            <th>Action</th>
+        </thead>
+        {% for book in books %}
+        <tbody>
+            <td>{{book.id}}</td>
+            <td>{{book.name}}</td>
+            <td>{{book.price}}</td>
+            <td>
+                <center>{{book.quantity}}</center>
+            </td>
+            <td>{{book.publication.name}}</td>
+            <td>
+                {% for author in book.authors %}
+                    {{author.id}} &nbsp; {{author.name}}<br>
+                {% endfor %}
+            </td>
+            <td>
+                <a href="http://localhost:8000/book/edit/{{book.id}}">EDIT</a>
+                &nbsp;&nbsp;
+                <a href="http://localhost:8000/book/delete/{{book.id}}">DELETE</a>
+            </td>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% else %}
+    No records available...!
+    {% endif %}
+</body>
+
+</html>

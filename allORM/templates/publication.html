@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Publication Info</title>
+</head>
+
+<body>
+    <h2><a href="http://localhost:8000/publication/">Publication Registration Page</a></h2>
+    {{actionmsg}}
+    <br><br>
+    <form action="http://localhost:8000/publication/save/" method="POST">
+        {% csrf_token %}
+        Publication ID : <input type="text" name="id" value="{{publication.id}}" readonly><br><br>
+        Publication Name : <input type="text" name="name" value="{{publication.name}}"><br><br>
+        Publication Year : <input type="text" name="year" value="{{publication.year}}"><br><br>
+        Publication Author : <select name="author">
+            <option value="NA">--SELECT--</option>
+            {% for author in authors %}
+            {% if author.id == publication.author_id %}
+            <option value="{{author.id}}" selected>{{author.name}}</option>
+            {% else %}
+            <option value="{{author.id}}">{{author.name}}</option>
+            {% endif %}
+            {% endfor%}
+        </select>
+        <br><br>
+        <input type="submit">&nbsp;&nbsp;
+        <button type="button" onclick="location.href='http://localhost:8000/publication/'">Reset</button>&nbsp;&nbsp;
+        <button type="button" onclick="location.href='http://localhost:8000/'">Home</button><br><br>
+    </form>
+    {% if publications %}
+    <h3>List of Publications</h3>
+    <table border="1">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Author</th>
+            <th>Action</th>
+        </thead>
+        {% for publication in publications %}
+        <tbody>
+            <td>{{publication.id}}</td>
+            <td>{{publication.name}}</td>
+            <td>{{publication.year}}</td>
+            <td>{{publication.author.name}}</td>
+            <td>
+                <a href="http://localhost:8000/publication/edit/{{publication.id}}">EDIT</a>
+                &nbsp;&nbsp;
+                <a href="http://localhost:8000/publication/delete/{{publication.id}}">DELETE</a>
+            </td>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% else %}
+    No records available...!
+    {% endif %}
+</body>
+
+</html>

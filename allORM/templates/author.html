@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Author Info</title>
+</head>
+
+<body>
+    <h2><a href="http://localhost:8000/author/">Author Registration Page</a></h2>
+    {{actionmsg}}
+    <br><br>
+    <form action="http://localhost:8000/author/save/" method="POST">
+        {% csrf_token %}
+        Author ID : <input type="text" name="id" value="{{author.id}}" readonly><br><br>
+        Author Name : <input type="text" name="name" value="{{author.name}}"><br><br>
+        Author Age : <input type="text" name="age" value="{{author.age}}"><br><br>
+        Author Email : <input type="text" name="email" value="{{author.email}}"><br><br>
+        <input type="submit">&nbsp;&nbsp;
+        <button type="button" onclick="location.href='http://localhost:8000/author/'">Reset</button>&nbsp;&nbsp;
+        <button type="button" onclick="location.href='http://localhost:8000/'">Home</button><br><br>
+    </form>
+    {% if authors %}
+    <h3>List of authors</h3>
+    <table border="1">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Action</th>
+        </thead>
+        {% for author in authors %}
+        <tbody>
+            <td>{{author.id}}</td>
+            <td>{{author.name}}</td>
+            <td>{{author.age}}</td>
+            <td>{{author.email}}</td>
+            <td>
+                <a href="http://localhost:8000/author/edit/{{author.id}}">EDIT</a>
+                &nbsp;&nbsp;
+                <a href="http://localhost:8000/author/delete/{{author.id}}">DELETE</a>
+            </td>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% else %}
+    No records available...!
+    {% endif %}
+</body>
+
+</html>

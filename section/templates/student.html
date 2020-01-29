@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Student Info</title>
+</head>
+
+<body>
+    <h2><a href="http://localhost:8000/student/">Student Registration Page</a></h2>
+    {{actionmsg}}
+    <br><br>
+    <form action="http://localhost:8000/student/save/" method="POST">
+        {% csrf_token %}
+        Student ID : <input type="text" name="id" value="{{student.id}}" readonly><br><br>
+        Student Name : <input type="text" name="name" value="{{student.name}}"><br><br>
+        Student Age : <input type="text" name="age" value="{{student.age}}"><br><br>
+        Student Fees : <input type="text" name="fees" value="{{student.fees}}"><br><br>
+        Student Address : <input type="text" name="address" value="{{student.address}}"><br><br>
+        <input type="submit"><br><br>
+    </form>
+    {% if students %}
+    <h3>List of Students</h3>
+    <table border="1">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Fees</th>
+            <th>Address</th>
+            <th>Action</th>
+        </thead>
+        {% for student in students %}
+        <tbody>
+            <td>
+                <center>{{student.id}}</center>
+            </td>
+            <td>{{student.name}}</td>
+            <td>
+                <center>{{student.age}}</center>
+            </td>
+            <td>{{student.fees}}</td>
+            <td>{{student.address}}</td>
+            <td>
+                <a href="http://localhost:8000/student/edit/{{student.id}}">EDIT</a>
+                &nbsp;&nbsp;
+                <a href="http://localhost:8000/student/delete/{{student.id}}">DELETE</a>
+            </td>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% else %}
+    No records available...!
+    {% endif %}
+</body>
+
+</html>
