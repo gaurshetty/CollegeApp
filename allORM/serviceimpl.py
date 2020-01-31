@@ -34,12 +34,13 @@ class BookCurdOps:
     @staticmethod
     def save_update_book(bk):
         if bk.id == '0':
-            Book.objects.create(name=bk.name, price=bk.price,
-                                quantity=bk.quantity, publication_id=bk.publication_id)
-            return "Record added successfully..!"
+            b1 = Book(name=bk.name, price=bk.price, quantity=bk.quantity, publication_id=bk.publication_id)
+            b1.save()
+            bid = b1.id
+            return ["Record added successfully..!", bid]
         else:
             bk.save()
-            return "Record updated successfully..!"
+            return ["Record updated successfully..!", bk.id]
 
     @staticmethod
     def delete_book(id):

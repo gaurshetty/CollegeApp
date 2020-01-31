@@ -23,16 +23,18 @@ def save_update_book(req):
         bk = Book(id=rd['id'], name=rd['name'], price=rd['price'],
                   quantity=rd['quantity'], publication_id=rd['pub'])
         msg = BookCurdOps.save_update_book(bk)
+        bid = msg[1]
+        b1 = Book.objects.get(id=bid)
         atrs = req.POST.getlist('authorlist')
         for atr in atrs:
-            bk.authorsref.add(Author.objects.get(id=int(atr)))
-            bk.save()
+            b1.authorsref.add(Author.objects.get(id=int(atr)))
+            b1.save()
     context = {
         'book': BookCurdOps.get_dummy_book(),
         'books': BookCurdOps.get_book_with_authors(),
         'publications': Publication.objects.all(),
         'authorlist': Author.objects.all(),
-        'actionmsg': msg
+        'actionmsg': msg[0]
     }
     return render(req, 'book.html', context)
 
@@ -51,7 +53,7 @@ def delete_book(req, id):
     msg = BookCurdOps.delete_book(id)
     context = {
         'book': BookCurdOps.get_dummy_book(),
-        'books': BookCurdOps.get_book_with_authorss(),
+        'books': BookCurdOps.get_book_with_authors(),
         'publications': Publication.objects.all(),
         'authorlist': Author.objects.all(),
         'actionmsg': msg
